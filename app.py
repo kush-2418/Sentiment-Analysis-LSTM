@@ -16,11 +16,11 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = IMAGE_FOLDER
 
 def init():
-    global model,graph,word_to_id
+    global model,graph
     # load the pre-trained Keras model
     model = load_model('sentiment_analysis.h5')
     graph = tf.get_default_graph()
-    word_to_id = imdb.get_word_index()
+    
     
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -30,6 +30,7 @@ def home():
 @app.route('/sentiment_analysis_prediction', methods = ['POST', "GET"])
 def sent_analysis_prediction():
     if request.method=='POST':
+        word_to_id = imdb.get_word_index()
         text = request.form['text']
         sentiment = ''
         max_review_length = 500
