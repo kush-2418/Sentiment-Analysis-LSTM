@@ -10,6 +10,10 @@ from keras.preprocessing import sequence
 from keras.models import load_model
 
 IMAGE_FOLDER = os.path.join('static', 'img_pool')
+word_to_id = imdb.get_word_index()
+model = load_model('sentiment_analysis.h5')
+graph = tf.get_default_graph()
+
 
 app = Flask(__name__)
 
@@ -24,8 +28,7 @@ def home():
 @app.route('/sentiment_analysis_prediction', methods = ['POST', "GET"])
 def sent_analysis_prediction():
     if request.method=='POST':
-        word_to_id = imdb.get_word_index()
-        model = load_model('sentiment_analysis.h5')
+
 
         text = request.form['text']
         sentiment = ''
@@ -39,7 +42,6 @@ def sent_analysis_prediction():
         x_test = [[word_to_id[word] if (word in word_to_id and word_to_id[word]<=20000) else 0 for word in words]]
         x_test = sequence.pad_sequences(x_test, maxlen=max_review_length) # Should be same which you used for training data
         vector = np.array([x_test.flatten()])
-        graph = tf.get_default_graph()
         with graph.as_default():
             probability = model.predict(array([vector][0]))[0][0]
             class1 = model.predict_classes(array([vector][0]))[0][0]
