@@ -2,6 +2,9 @@
 
 This project classifies the text into positive or negative classes. The project has been created using IMDB dataset and deep learning based Long Short Term Memory.
 
+## Demo
+Link - https://imdb-sentiment-analysis.herokuapp.com
+
 ## Install
 
 * Numpy
