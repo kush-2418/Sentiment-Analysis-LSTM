@@ -52,5 +52,4 @@ def sent_analysis_prediction():
     return render_template('home.html', text=text, sentiment=sentiment, probability=probability, image=img_filename)
 
 if __name__ == "__main__":
-    init()
     app.run()
