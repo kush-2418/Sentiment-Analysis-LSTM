@@ -12,7 +12,6 @@ from keras.models import load_model
 IMAGE_FOLDER = os.path.join('static', 'img_pool')
 word_to_id = imdb.get_word_index()
 model = load_model('sentiment_analysis.h5')
-graph = tf.get_default_graph()
 
 
 app = Flask(__name__)
@@ -28,6 +27,7 @@ def home():
 @app.route('/sentiment_analysis_prediction', methods = ['POST', "GET"])
 def sent_analysis_prediction():
     if request.method=='POST':
+        graph = tf.get_default_graph()
 
 
         text = request.form['text']
