@@ -17,7 +17,7 @@ sess = tf.Session()
 graph = tf.get_default_graph()
 
 set_session(sess)
-model = load_model('sentiment_analysis_lstm.ipynb')
+model = load_model('sentiment_analysis_lstm.h5')
 
 app = Flask(__name__)
 
