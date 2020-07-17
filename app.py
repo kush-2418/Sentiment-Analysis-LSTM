@@ -7,13 +7,17 @@ import tensorflow as tf
 from numpy import array
 from keras.datasets import imdb
 from keras.preprocessing import sequence
-from keras.models import load_model
+from tensorflow.python.keras.backend import set_session
+from tensorflow.python.keras.models import load_model
+
 
 IMAGE_FOLDER = os.path.join('static', 'img_pool')
 word_to_id = imdb.get_word_index()
-model = load_model('sentiment_analysis.h5')
+sess = tf.Session()
 graph = tf.get_default_graph()
 
+set_session(sess)
+model = load_model('sentiment_analysis_lstm.ipynb')
 
 app = Flask(__name__)
 
@@ -25,8 +29,9 @@ def home():
 
     return render_template("home.html")
 
-@app.route('/sentiment_analysis_prediction', methods = ['POST', "GET"])
-def sent_analysis_prediction():
+
+@app.route('/sentiment_analysis_prediction',methods=["POST","GET"])
+def sentiment_analysis_prediction():
     if request.method=='POST':
 
 
@@ -43,6 +48,7 @@ def sent_analysis_prediction():
         x_test = sequence.pad_sequences(x_test, maxlen=max_review_length) # Should be same which you used for training data
         vector = np.array([x_test.flatten()])
         with graph.as_default():
+            set_session(sess)
             probability = model.predict(array([vector][0]))[0][0]
             class1 = model.predict_classes(array([vector][0]))[0][0]
         if class1 == 0:
