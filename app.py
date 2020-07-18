@@ -11,7 +11,6 @@ from tensorflow.python.keras.backend import set_session
 from tensorflow.python.keras.models import load_model
 
 
-IMAGE_FOLDER = os.path.join('static', 'img_pool')
 word_to_id = imdb.get_word_index()
 sess = tf.Session()
 graph = tf.get_default_graph()
@@ -21,7 +20,6 @@ model = load_model('sentiment_analysis_lstm.h5')
 
 app = Flask(__name__)
 
-app.config['UPLOAD_FOLDER'] = IMAGE_FOLDER
 
     
 @app.route('/', methods=['GET', 'POST'])
@@ -52,12 +50,10 @@ def sentiment_analysis_prediction():
             probability = model.predict(array([vector][0]))[0][0]
             class1 = model.predict_classes(array([vector][0]))[0][0]
         if class1 == 0:
-            sentiment = 'Negative'
-            img_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'sad_emoji.png')
+            sentiment = 'Negative 😥'
         else:
-            sentiment = 'Positive'
-            img_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'happy_emoji.png')
-    return render_template('home.html', text=text, sentiment=sentiment, probability=probability, image=img_filename)
+            sentiment = 'Positive 😃'
+    return render_template('home.html', text=text, sentiment=sentiment, probability=probability)
 
 if __name__ == "__main__":
     app.run()
